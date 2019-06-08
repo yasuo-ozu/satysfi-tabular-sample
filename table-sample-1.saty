@@ -1,0 +1,49 @@
+@require: stdjareport
+@require: table
+document (|
+	title = { Table sample };
+	author = { yasuo-ozu };
+|) '<
+	+chapter{ Table sampple }<
+		+p{
+			Table sample
+		}
+		+p{
+			\tabular(fun t -> (
+				[
+					[t#l {Program}; t#m 1 2 {Answer}; t#e; t#m 1 2 {Time [ms]}; t#e ];
+					[t#e ; t#c {case A} ; t#c {case B} ; t#c {case A} ; t#c {case B} ];
+					[t#l {foldn} ; t#c {Yes}; t#c {Yes}; t#r {${4}}; t#r {${16}} ];
+					[t#l {mc91} ; t#c {No} ; t#c {–} ; t#r {${24}}; t#r {–} ];
+					[t#l {rev} ; t#c {Yes}; t#c {Yes}; t#r {${4}}; t#r {${78}} ];
+					[t#l {max} ; t#c {Yes}; t#c {Yes}; t#r {${8}}; t#r {${69}} ];
+				]
+			))(fun xs ys -> (
+				let thin = stroke 0.5pt Color.black in
+				let thick = stroke 1pt Color.black in
+				match (ys, List.reverse ys) with
+					| (y0 :: y1 :: y2 :: _, ylast :: _) ->
+						( match (xs, List.reverse xs) with
+							| (x0 :: x1 :: _ :: x3 :: _, xlast :: _) ->
+								List.concat [
+									[ thin (Gr.line (x0, y1) (x1, y2)) ];
+									[
+										thin (Gr.line (x1, y0) (x1, ylast));
+										thin (Gr.line (x3, y0) (x3, ylast))
+									];
+									[
+										thin (Gr.line (x0, y1) (xlast, y1));
+										thin (Gr.line (x0, y2) (xlast, y2))
+									];
+									[
+										thick (Gr.line (x0, y0) (xlast, y0));
+										thick (Gr.line (x0, ylast) (xlast, ylast))
+									];
+								]
+							| _ -> []
+						)
+					| _ -> []
+			));
+		}
+	>
+>
